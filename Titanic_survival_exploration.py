@@ -109,17 +109,23 @@ def accuracy_score_NG(truth, pred):
         #print len(truth), ",", len(pred)
         return "Number of predictions does not match number of outcomes!"
 
-data_NG = full_data.dropna(how='any')
+data_NG = full_data.fillna(0)
 outcomes = data_NG['Survived']
 data_NG = data_NG.drop('Survived', axis = 1)
 data_NG = data_NG.drop('PassengerId', axis = 1)
 data_NG = data_NG.drop('Name', axis = 1)
 data_NG = data_NG.drop('Ticket', axis = 1)
-data_NG = data_NG.drop('Cabin', axis = 1)
-data_NG = data_NG.drop('Embarked', axis = 1)
+#data_NG = data_NG.drop('Cabin', axis = 1)
+#data_NG = data_NG.drop('Embarked', axis = 1)
 le = preprocessing.LabelEncoder()
 le.fit(data_NG['Sex'])
 data_NG['Sex'] = le.transform(data_NG['Sex'])
+le.fit(data_NG['Embarked'])
+data_NG['Embarked'] = le.transform(data_NG['Embarked'])
+le.fit(data_NG['Cabin'])
+data_NG['Cabin'] = le.transform(data_NG['Cabin'])
+#le.fit(data_NG['Ticket'])
+#data_NG['Ticket'] = le.transform(data_NG['Ticket'])
 def predictions_3(data):
     #Model with all features using Naive Bayes:
     gnb = GaussianNB()

@@ -37,7 +37,7 @@ def accuracy_score(truth, pred):
 predictions = pd.Series(np.ones(5, dtype = int))
 print accuracy_score(outcomes[:5], predictions)
 
-#Calculating accuracy assuming on one survived in the disaster
+#Calculating accuracy assuming no one survived in the disaster
 def predictions_0(data):
     #Model with no features. Always predicts a passenger did not survive.
     predictions = []
@@ -51,22 +51,43 @@ predictions = predictions_0(data)
 #Score for the above model
 print accuracy_score(outcomes, predictions)
 
+
 #Calculating accuracy assuming only females survived
 def predictions_1(data):
     #Model with one feature:
     #Predict a passenger survived if they are female.
+    count = 0
     predictions = []
     for _, passenger in data.iterrows():
-        print data['Sex']
-        if data['Sex'][1] == 'male':
+        #print data['Sex']
+        if data['Sex'][count] == 'male':
             predictions.append(0)
         else:
             predictions.append(1)
+        count+=1
     # Return our predictions
     return pd.Series(predictions)
 # Make the predictions
 predictions = predictions_1(data)
 print accuracy_score(outcomes, predictions)
 
+#Calculating accuracy assuming females and males aged less than 10 years survived
+#in the disaster
+def predictions_2(data):
+    #Model with two features:
+    #Predict a passenger survived if they are female.
+    #Predict a passenger survived if they are male and younger than 10.
+    predictions = []
+    for _, passenger in data.iterrows():
+        #print data['Age']
+        if data['Sex'][1] == 'male' and float(data['Age'][1]) > 10.0:
+            predictions.append(0)
+        else:
+            predictions.append(1)
+    # Return our predictions
+    return pd.Series(predictions)
+# Make the predictions
+predictions = predictions_2(data)
+print accuracy_score(outcomes, predictions)
 
 

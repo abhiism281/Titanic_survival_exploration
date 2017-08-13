@@ -77,13 +77,15 @@ def predictions_2(data):
     #Model with two features:
     #Predict a passenger survived if they are female.
     #Predict a passenger survived if they are male and younger than 10.
+    count = 0
     predictions = []
     for _, passenger in data.iterrows():
         #print data['Age']
-        if data['Sex'][1] == 'male' and float(data['Age'][1]) > 10.0:
+        if data['Sex'][count] == 'male' and float(data['Age'][count]) > 10.0:
             predictions.append(0)
         else:
             predictions.append(1)
+        count += 1
     # Return our predictions
     return pd.Series(predictions)
 # Make the predictions

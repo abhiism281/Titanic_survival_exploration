@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from sklearn import preprocessing
+from sklearn import svm
 
 # RMS Titanic data visualization code
 #from titanic_visualizations import survival_stats
@@ -109,14 +110,15 @@ def accuracy_score_NG(truth, pred):
         #print len(truth), ",", len(pred)
         return "Number of predictions does not match number of outcomes!"
 
+#Preprocess the data
 data_NG = full_data.fillna(0)
 outcomes = data_NG['Survived']
 data_NG = data_NG.drop('Survived', axis = 1)
 data_NG = data_NG.drop('PassengerId', axis = 1)
 data_NG = data_NG.drop('Name', axis = 1)
 data_NG = data_NG.drop('Ticket', axis = 1)
-#data_NG = data_NG.drop('Cabin', axis = 1)
-#data_NG = data_NG.drop('Embarked', axis = 1)
+
+#Encoding the string labels with float
 le = preprocessing.LabelEncoder()
 le.fit(data_NG['Sex'])
 data_NG['Sex'] = le.transform(data_NG['Sex'])
@@ -124,26 +126,20 @@ le.fit(data_NG['Embarked'])
 data_NG['Embarked'] = le.transform(data_NG['Embarked'])
 le.fit(data_NG['Cabin'])
 data_NG['Cabin'] = le.transform(data_NG['Cabin'])
-#le.fit(data_NG['Ticket'])
-#data_NG['Ticket'] = le.transform(data_NG['Ticket'])
+
 def predictions_3(data):
-    #Model with all features using Naive Bayes:
-    gnb = GaussianNB()
-    #data = data.astype(np.float64, copy=False)
-    #outcomes = outcomes.astype(np.float64, copy=False)
+    #display a few data
     display(data.head(10))
-    #predictions = predictions_2(data)
-    predictions = gnb.fit(data, outcomes).predict(data)
-    #preprocess the outcomes
-    outcomes_pre = []
-    for i in range(len(predictions)):
-        outcomes_pre.append(outcomes.values[i])
+    
+    #Model with all features using SVM:
+    clf = svm.SVC()
+    predictions = clf.fit(data, outcomes).predict(data)
+    
     # Return our predictions
-    print pd.Series(predictions)
-    print pd.Series(outcomes_pre)
-    return pd.Series(predictions), pd.Series(outcomes_pre)
+    return pd.Series(predictions)
+
 # Make the predictions
-predictions, outcomes_pre = predictions_3(data_NG)
-print accuracy_score(outcomes_pre, predictions)
+predictions = predictions_3(data_NG)
+print accuracy_score(outcomes, predictions)
 
 

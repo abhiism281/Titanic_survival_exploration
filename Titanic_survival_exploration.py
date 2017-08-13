@@ -22,6 +22,7 @@ data = full_data.drop('Survived', axis = 1)
 # Show the new dataset with 'Survived' removed
 display(data.head())
 
+#Defining accuracy score function
 def accuracy_score(truth, pred):
     #Returns accuracy score for input truth and predictions.
     # Ensure that the number of predictions matches number of outcomes
@@ -36,6 +37,7 @@ def accuracy_score(truth, pred):
 predictions = pd.Series(np.ones(5, dtype = int))
 print accuracy_score(outcomes[:5], predictions)
 
+#Calculating accuracy assuming on one survived in the disaster
 def predictions_0(data):
     #Model with no features. Always predicts a passenger did not survive.
     predictions = []
@@ -48,3 +50,23 @@ def predictions_0(data):
 predictions = predictions_0(data)
 #Score for the above model
 print accuracy_score(outcomes, predictions)
+
+#Calculating accuracy assuming only females survived
+def predictions_1(data):
+    #Model with one feature:
+    #Predict a passenger survived if they are female.
+    predictions = []
+    for _, passenger in data.iterrows():
+        print data['Sex']
+        if data['Sex'][1] == 'male':
+            predictions.append(0)
+        else:
+            predictions.append(1)
+    # Return our predictions
+    return pd.Series(predictions)
+# Make the predictions
+predictions = predictions_1(data)
+print accuracy_score(outcomes, predictions)
+
+
+

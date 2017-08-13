@@ -15,3 +15,9 @@ in_file = 'titanic_data.csv'
 full_data = pd.read_csv(in_file)
 # Print the first few entries of the RMS Titanic data
 display(full_data.head())
+
+# Store the 'Survived' feature in a new variable and remove it from the dataset
+outcomes = full_data['Survived']
+data = full_data.drop('Survived', axis = 1)
+# Show the new dataset with 'Survived' removed
+display(data.head())
